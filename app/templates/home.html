@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <title>Kiddopia-Test</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+      <link rel="stylesheet" href="{{url_for('static', filename='styles/main.css')}}">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <script src="{{url_for('static', filename='scripts/main.js')}}"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   </head>
+   <body>
+      <div class="topnav" id="myTopnav">
+         <a href="#home" class="active">Home</a>
+         <a href="#news">News</a>
+         <a href="#contact">Contact</a>
+         <a href="#about">About</a>
+         <a href="javascript:void(0);" class="icon" onclick="top_nav_bar()">
+         <i class="fa fa-bars"></i>
+         </a>
+      </div>
+      <div class="kiddopia_bg">
+      </div>
+      <div class="table-wrapper1">
+         <form class="form-inline" enctype="multipart/form-data" method="post" action="/submit">
+              {% if form %}
+                 {{ form.hidden_tag() }}
+            {% endif %}
+
+            <label for="name" class="m-2">Name*</label>
+            <input type="text" class="form-control m-2" id="name" name="name">
+            <label for="email" class="m-2">Email*</label>
+            <input type="text" class="form-control m-2" id="email" name="email">
+            <input type = "file" style="margin-left:2%;"  name = "file" />
+            <input type="submit" class="btn btn-primary m-2"  value="Submit" style="background-color:#4FC3A1;">
+         </form>
+      </div>
+      {% if error %}
+        <h2 style="color:red;"><strong>Validation Failed</strong>: {{error}}</h2>
+      {% endif %}
+      <h2>Customers</h2>
+      <div class="table-wrapper">
+         <table class="fl-table">
+            <thead>
+               <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Attachment</th>
+                  <th>Actions</th>
+                  <th style="display:none;">Id</th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for k,v in places.items() %}
+               <tr>
+                  <td>{{ v['name'] }}</td>
+                  <td>{{ v['email'] }}</td>
+                  <td><a href="{{url_for('downloads', id=k)}}">{{v['attachment']}}</a></td>
+                  <td><a class="{{k}}" onclick="edit_prompt('{{k}}')" href="#">Edit</a> <i class="fa fa-edit"></i>    <a class="{{k}}" onclick="delete_prompt('{{k}}')" href="#">Delete</a> <i class="fa fa-trash"></i></td>
+                  <td style="display:none;">{{k}}</td>
+               </tr>
+               {% endfor %}
+            <tbody>
+         </table>
+      </div>
+      <!-- Trigger/Open The Modal -->
+      <!--<button id="myBtn" onclick="funciton()">Open Modal</button>-->
+      <!-- The Modal -->
+      <div id="myModal" class="modal">
+         <!-- Modal content -->
+         <div class="modal-content">
+            <div class="modal-header">
+               <h3>Edit</h3>
+               <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+               <form class="form-inline" enctype="multipart/form-data" method="post" action="/edit">
+                  {% if form %}
+                     {{ form.hidden_tag() }}
+                  {% endif %}
+                  <input style="display:none;" type="text" class="form-control m-2" id="modal_id" name="id">
+                  <label for="name_edit" class="m-2">New Name</label>
+                  <input type="text" class="form-control m-2" id="name_edit" name="name">
+                  <label for="email_edit" class="m-2">New Email</label>
+                  <input type="text" class="form-control m-2" id="email_edit" name="email">
+                  <input type = "file" style="margin-left:2%;"  name = "file" />
+                  <input type="submit" class="btn btn-primary m-2" value="Submit" style="background-color:#4FC3A1;">
+               </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+         </div>
+      </div>
+      <script>
+         // Get the modal
+         var modal = document.getElementById("myModal");
+
+         // Get the button that opens the modal
+         var btn = document.getElementById("myBtn");
+
+         // Get the <span> element that closes the modal
+         var span = document.getElementsByClassName("close")[0];
+
+         // When the user clicks the button, open the modal
+
+
+         // When the user clicks on <span> (x), close the modal
+         span.onclick = function() {
+           modal.style.display = "none";
+         }
+
+         // When the user clicks anywhere outside of the modal, close it
+         window.onclick = function(event) {
+           if (event.target == modal) {
+             modal.style.display = "none";
+           }
+         }
+      </script>
+   </body>
+</html>
