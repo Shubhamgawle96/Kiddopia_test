@@ -1,3 +1,5 @@
 Flask
 requests
 python-firebase
+gunicorn
+psycopg2-binary
